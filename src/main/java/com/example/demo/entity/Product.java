@@ -37,4 +37,9 @@ public class Product {
 	@OrderBy("id ASC")
 	//透過 商品 查找 採購明細s
 	private Set<PurchaseItem> purchaseItems = new LinkedHashSet<>();
+	
+	// 一(商品)對多(訂單明細)
+	@OneToMany(mappedBy = "product")
+	@OrderBy("id ASC")
+	private Set<OrderItem> orderItems = new LinkedHashSet<>();
 }

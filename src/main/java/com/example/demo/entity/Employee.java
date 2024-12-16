@@ -36,4 +36,9 @@ public class Employee {
 	@OrderBy("id ASC") 
 	// 透過 員工 查找 採購單s
 	private Set<Purchase> purchases = new LinkedHashSet<>();
+	
+	// 一(員工)對多(訂單)
+	@OneToMany(mappedBy = "employee")
+	@OrderBy("id ASC")
+	private Set<Order> orders = new LinkedHashSet<>();
 }
