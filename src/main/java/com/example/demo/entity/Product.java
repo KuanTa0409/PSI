@@ -42,4 +42,60 @@ public class Product {
 	@OneToMany(mappedBy = "product")
 	@OrderBy("id ASC")
 	private Set<OrderItem> orderItems = new LinkedHashSet<>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Integer getCost() {
+		return cost;
+	}
+
+	public void setCost(Integer cost) {
+		this.cost = cost;
+	}
+
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Set<PurchaseItem> getPurchaseItems() {
+		return purchaseItems;
+	}
+
+	public void setPurchaseItems(Set<PurchaseItem> purchaseItems) {
+		this.purchaseItems = purchaseItems;
+	}
+
+	public Set<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(Set<OrderItem> orderItems) {
+		this.orderItems = orderItems;
+	}
 }
