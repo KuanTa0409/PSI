@@ -33,6 +33,16 @@ public class Customer {
 	@OneToMany(mappedBy = "customer")
 	@OrderBy("id ASC")
 	private Set<Order> orders = new LinkedHashSet<>();
+	
+	public Customer() {
+		
+	}
+
+	public Customer(String name, String city, String phone) {
+		this.name = name;
+		this.city = city;
+		this.phone = phone;
+	}
 
 	public Long getId() {
 		return id;
