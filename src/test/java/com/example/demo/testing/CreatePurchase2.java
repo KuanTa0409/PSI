@@ -44,7 +44,7 @@ public class CreatePurchase2 {
 		Product p2 = productRepository.findById(5L).get(); //太陽餅
 		Product p3 = productRepository.findById(4L).get(); //鳳梨酥
 		
-		// 採購單1
+		// 採購單2
 		Purchase pur2 = new Purchase();
 		pur2.setDate(new Date());
 		
@@ -72,6 +72,11 @@ public class CreatePurchase2 {
 		pItem3.setAmount(2000);
 		pItem3.setProduct(p3);
 		pItem3.setPurchase(pur2);	
+		
+		purchaseRepository.save(pur2);
+		purchaseItemRepository.save(pItem1);
+		purchaseItemRepository.save(pItem2);
+		purchaseItemRepository.save(pItem3);
 		
 		System.out.println("CreatePurchase2 OK!");
 	}
