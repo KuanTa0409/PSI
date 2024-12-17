@@ -42,6 +42,17 @@ public class Product {
 	@OneToMany(mappedBy = "product")
 	@OrderBy("id ASC")
 	private Set<OrderItem> orderItems = new LinkedHashSet<>();
+	
+	public Product() {
+		
+	}
+
+	public Product(String name, Integer cost, Integer price, String description) {
+		this.name = name;
+		this.cost = cost;
+		this.price = price;
+		this.description = description;
+	}
 
 	public Long getId() {
 		return id;
