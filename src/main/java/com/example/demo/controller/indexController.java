@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class indexController {
 	
 	@GetMapping("/")
-	public String index() {
+	public String index() {  // http://localhost:8081/psi/index/
 		return "index";
 	}
 }
