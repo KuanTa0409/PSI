@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>PSI_Supplier</title>
+		<title>PSI_Employee</title>
 		<link rel="stylesheet"
 			  href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 	</head>
@@ -12,20 +12,29 @@
 			<div th:include="header :: header"></div>
 			
 			<!-- Content -->
-			<h1>編輯供應商</h1>
-			<form th:action="@{/supplier/{id}(id=${supplier.id})}" th:object="${supplier}" method="post">
+			<h1>修改員工</h1>
+			<form th:action="@{/employee/{id}(id=${employee.id})}" th:object="${employee}" method="post">
 				<input type="hidden" name="_method" value="PUT" />
 				<div class="form-group">
-					<label>供應商名稱:</label>
+					<label>員工名稱:</label>
 					<input type="text" 
 						   th:field="*{name}" 
 						   id="name" 
 						   class="form-control"
-						   placeholder="請輸入供應商名稱" />
+						   placeholder="請輸入員工名稱" />
+				</div>
+				<div class="form-group">
+					<label>部門名稱</label>
+					<select class="form-control select2"
+							th:field="*{department.id}"
+							id="department.id">
+						<option th:each="d:${departments}" 
+								th:value="${d.id}" 
+								th:text="${d.name}"></option>
+					</select>
 				</div>
 				<input type="submit" value="更新" class="btn btn-primary" />
 			</form>
-			
 			<!-- Footer -->
 			<div th:include="footer :: footer"></div>
 		</div>
