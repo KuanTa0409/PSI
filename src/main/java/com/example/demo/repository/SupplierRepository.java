@@ -7,5 +7,5 @@ import com.example.demo.entity.Supplier;
 
 @Repository
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
-
+	
 }
