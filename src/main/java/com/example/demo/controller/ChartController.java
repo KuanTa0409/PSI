@@ -21,5 +21,4 @@ public class ChartController {
 		model.addAttribute("productSales", productRepository.queryProductSales());
 		return "chart";
 	}
-	
 }

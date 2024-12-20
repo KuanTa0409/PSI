@@ -96,5 +96,4 @@ public class Purchase { //採購單
 							.mapToInt(item -> item.getAmount() * item.getProduct().getCost())
 							.sum();
 	}
-	
 }

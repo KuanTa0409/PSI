@@ -19,5 +19,4 @@ public class InventoryController {
 		model.addAttribute("inventories", productRepository.queryInventory());
 		return "inventory";
 	}
-	
 }
