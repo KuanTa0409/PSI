@@ -12,7 +12,7 @@ import com.example.demo.repository.ProductRepository;
 @RequestMapping("/inventory")
 public class InventoryController {
 	@Autowired
-	ProductRepository productRepository;
+	private ProductRepository productRepository;
 	
 	@GetMapping("/")
 	public String index(Model model) {

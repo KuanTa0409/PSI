@@ -18,7 +18,7 @@ import com.example.demo.service.ProductService;
 public class ProductController {
 
 	@Autowired
-	ProductService productService;
+	private ProductService productService;
 	
 	@GetMapping("/")
 	public String index(@ModelAttribute Product product, Model model) {

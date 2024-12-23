@@ -18,7 +18,7 @@ import com.example.demo.service.DepartmentService;
 public class DepartmentController {
 
 	@Autowired
-	DepartmentService departmentService;
+	private DepartmentService departmentService;
 	
 	@GetMapping("/")    // th:object="${department}" 
 	public String index(@ModelAttribute Department department, Model model) {

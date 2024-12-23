@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class EmployeeController {
 
 	@Autowired
-	EmployeeService employeeService;
+	private EmployeeService employeeService;
 
 	@Autowired
-	DepartmentService departmentService;
+	private DepartmentService departmentService;
 
 	@GetMapping("/")
 	public String index(@ModelAttribute Employee employee, Model model) {

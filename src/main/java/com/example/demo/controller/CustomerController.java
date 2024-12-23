@@ -17,7 +17,7 @@ import com.example.demo.service.CustomerService;
 public class CustomerController {
 	
 	@Autowired
-	CustomerService customerService;
+	private CustomerService customerService;
 	
 	@GetMapping("/")
 	public String index(Model model) {
