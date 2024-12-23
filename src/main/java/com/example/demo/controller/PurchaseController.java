@@ -15,65 +15,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.Purchase;
 import com.example.demo.entity.PurchaseItem;
-import com.example.demo.repository.EmployeeRepository;
-import com.example.demo.repository.ProductRepository;
-import com.example.demo.repository.PurchaseItemRepository;
-import com.example.demo.repository.PurchaseRepository;
-import com.example.demo.repository.SupplierRepository;
+import com.example.demo.service.EmployeeService;
+import com.example.demo.service.ProductService;
+import com.example.demo.service.PurchaseService;
+import com.example.demo.service.SupplierService;
 
 @Controller
 @RequestMapping("/purchase")
 public class PurchaseController {
 	
 	@Autowired
-	PurchaseRepository purchaseRepository;
+	private PurchaseService purchaseService;
 	
 	@Autowired
-	PurchaseItemRepository purchaseItemRepository;
+	private SupplierService supplierService;
 	
 	@Autowired
-	SupplierRepository supplierRepository;
+	private EmployeeService employeeService;
 	
 	@Autowired
-	EmployeeRepository employeeRepository;
-	
-	@Autowired
-	ProductRepository productRepository;
+	private ProductService productService;
 	
 	// 採購單主檔 CRUD --------------------------------------------------
 	@GetMapping("/")
 	public String index(@ModelAttribute Purchase purchase, Model model) {
-		model.addAttribute("purchases", purchaseRepository.findAll());
-		model.addAttribute("suppliers", supplierRepository.findAll());
-		model.addAttribute("employees", employeeRepository.findAll());
+		model.addAttribute("purchases", purchaseService.findAll());
+		model.addAttribute("suppliers", supplierService.findAll());
+		model.addAttribute("employees", employeeService.findAll());
 		return "purchase";
 	}
 	
 	@PostMapping("/")  // 新增採購單
 	public String add(Purchase purchase) {
-		purchaseRepository.save(purchase);
+		purchaseService.save(purchase);
 		return "redirect:/purchase/";
 	}
 	
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Long id, Model model) {
-		Purchase purchase = purchaseRepository.findById(id).get();
+		Purchase purchase = purchaseService.findById(id);
 		model.addAttribute("purchase", purchase);
-		model.addAttribute("suppliers", supplierRepository.findAll());
-		model.addAttribute("employees", employeeRepository.findAll());
+		model.addAttribute("suppliers", supplierService.findAll());
+		model.addAttribute("employees", employeeService.findAll());
 		return "purchase-edit";
 	}
 	
 	@PutMapping("/{id}")
 	public String update(@PathVariable("id") Long id, Purchase purchase) {
 		purchase.setId(id);
-		purchaseRepository.save(purchase);
+		purchaseService.save(purchase);
 		return "redirect:/purchase/";
 	}
 	
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Long id) {
-		purchaseRepository.deleteById(id);
+		purchaseService.deleteById(id);
 		return "redirect:/purchase/";
 	}
 	
@@ -83,9 +79,9 @@ public class PurchaseController {
 							@ModelAttribute PurchaseItem purchaseItem, 
 							Model model) {
 		// 透過 pid 先找到該筆採購單
-		Purchase purchase = purchaseRepository.findById(pid).get();
+		Purchase purchase = purchaseService.findById(pid);
 		// 取得所有商品
-		List<Product> products = productRepository.findAll();
+		List<Product> products = productService.findAll();
 		model.addAttribute("purchase", purchase);
 		model.addAttribute("products", products);
 		
@@ -95,12 +91,7 @@ public class PurchaseController {
 	// 新增採購單明細
 	@PostMapping("/{pid}/item")
 	public String addItem(PurchaseItem purchaseItem, @PathVariable("pid") Long pid) {
-		// 取得採購單
-		Purchase purchase = purchaseRepository.findById(pid).get();
-		// 配置關聯(由多方建立關聯)
-		purchaseItem.setPurchase(purchase);
-		// 存檔
-		purchaseItemRepository.save(purchaseItem);
+		purchaseService.savePurchaseItem(purchaseItem, pid);
 		return "redirect:/purchase/" + pid + "/item";
 	}
 	
@@ -109,9 +100,9 @@ public class PurchaseController {
 	public String getItem(@PathVariable("pid") Long pid, 
 						  @PathVariable("iid") Long iid,
 						  Model model) {
-		Purchase purchase = purchaseRepository.findById(pid).get();
-		PurchaseItem purchaseItem = purchaseItemRepository.findById(iid).get();
-		List<Product> products = productRepository.findAll();
+		Purchase purchase = purchaseService.findById(pid);
+		PurchaseItem purchaseItem = purchaseService.findpItemById(iid);
+		List<Product> products = productService.findAll();
 		
 		model.addAttribute("purchase", purchase);
 		model.addAttribute("purchaseItem", purchaseItem);
@@ -123,11 +114,7 @@ public class PurchaseController {
 	// 修改採購明細
 	@PutMapping("/{pid}/item")
 	public String updateItem(PurchaseItem purchaseItem, @PathVariable("pid") Long pid) {
-		// 取得採購單檔
-		Purchase purchase = purchaseRepository.findById(pid).get();
-		// 配置關聯(由多的一方建立關聯)
-		purchaseItem.setPurchase(purchase);
-		purchaseItemRepository.save(purchaseItem);
+		purchaseService.savePurchaseItem(purchaseItem, pid);
 		
 		return "redirect:/purchase/" + pid + "/item";
 	}
@@ -135,7 +122,7 @@ public class PurchaseController {
 	// 刪除採購明細
 	@GetMapping("/delete/{pid}/item/{iid}")
 	public String deleteItem(@PathVariable("pid") Long pid, @PathVariable("iid") Long iid){
-		purchaseItemRepository.deleteById(iid);
+		purchaseService.deletePurchaseItem(iid);
 		return "redirect:/purchase/" + pid + "/item";
 	}
 }

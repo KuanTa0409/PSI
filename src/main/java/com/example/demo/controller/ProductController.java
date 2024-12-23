@@ -11,30 +11,30 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.Product;
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.service.ProductService;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
 
 	@Autowired
-	ProductRepository productRepository;
+	ProductService productService;
 	
 	@GetMapping("/")
 	public String index(@ModelAttribute Product product, Model model) {
-		model.addAttribute("products", productRepository.findAll());
+		model.addAttribute("products", productService.findAll());
 		return "product";
 	}
 	
 	@PostMapping("/")
 	public String add(Product product) {
-		productRepository.save(product);
+		productService.save(product);
 		return "redirect:/product/";
 	}
 	
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id")Long id, Model model) {
-		Product product = productRepository.findById(id).get();
+		Product product = productService.findById(id);
 		model.addAttribute("product", product);
 		return "product-edit";
 	}
@@ -42,13 +42,13 @@ public class ProductController {
 	@PutMapping("/{id}")
 	public String update(@PathVariable("id")Long id, Product product) {
 		product.setId(id);
-		productRepository.save(product);
+		productService.save(product);
 		return "redirect:/product/";
 	}
 	
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id")Long id) {
-		productRepository.deleteById(id);
+		productService.deleteById(id);
 		return "redirect:/product/";
 	}
 }

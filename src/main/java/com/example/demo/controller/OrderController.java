@@ -17,40 +17,36 @@ import com.example.demo.entity.Employee;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.OrderItem;
 import com.example.demo.entity.Product;
-import com.example.demo.repository.CustomerRepository;
-import com.example.demo.repository.EmployeeRepository;
-import com.example.demo.repository.OrderItemRepository;
-import com.example.demo.repository.OrderRepository;
-import com.example.demo.repository.ProductRepository;
+import com.example.demo.service.CustomerService;
+import com.example.demo.service.EmployeeService;
+import com.example.demo.service.OrderService;
+import com.example.demo.service.ProductService;
 import com.example.demo.validator.InventoryValidator;
 
 @Controller
 @RequestMapping("/order")
 public class OrderController {
 	@Autowired
-	OrderRepository orderRepository;
+	private OrderService orderService;
 	
 	@Autowired
-	OrderItemRepository orderItemRepository;
+	private CustomerService customerService;
 	
 	@Autowired
-	CustomerRepository customerRepository;
+	private EmployeeService employeeService;
 	
 	@Autowired
-	EmployeeRepository employeeRepository;
+	private ProductService productService;
 	
 	@Autowired
-	ProductRepository productRepository;
-	
-	@Autowired
-	InventoryValidator inventoryValidator;
+	private InventoryValidator inventoryValidator;
 	
 	@GetMapping("/")
 	public String index(Model model) {
 		Order order = new Order();
-		List<Order> orders = orderRepository.findAll();
-		List<Customer> customers = customerRepository.findAll();
-		List<Employee> employees = employeeRepository.findAll();
+		List<Order> orders = orderService.findAll();
+		List<Customer> customers = customerService.findAll();
+		List<Employee> employees = employeeService.findAll();
 		model.addAttribute("order", order);
 		model.addAttribute("orders", orders);
 		model.addAttribute("customers", customers);
@@ -60,15 +56,15 @@ public class OrderController {
 	
 	@PostMapping("/")
 	public String create(Order order) {
-		orderRepository.save(order);
+		orderService.save(order);
 		return "redirect:/order/";
 	}
 	
 	@GetMapping("/edit/{id}") // 修改頁面的呈現
 	public String edit(@PathVariable("id") Long id, Model model) {
-		Order order = orderRepository.findById(id).get();
-		List<Customer> customers = customerRepository.findAll();
-		List<Employee> employees = employeeRepository.findAll();
+		Order order = orderService.findById(id);
+		List<Customer> customers = customerService.findAll();
+		List<Employee> employees = employeeService.findAll();
 		model.addAttribute("order", order);
 		model.addAttribute("customers", customers);
 		model.addAttribute("employees", employees);
@@ -78,13 +74,13 @@ public class OrderController {
 	@PutMapping("/{id}") // 對資料庫進行修改
 	public String update(@PathVariable("id") Long id, Order order) {
 		order.setId(id);
-		orderRepository.save(order);
+		orderService.save(order);
 		return "redirect:/order/";
 	}
 	
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Long id) {
-		orderRepository.deleteById(id);
+		orderService.deleteById(id);
 		return "redirect:/order/";
 	}
 	
@@ -92,9 +88,9 @@ public class OrderController {
 	// oid -> 訂單主檔 id
 	@GetMapping("/{oid}/item")
 	public String indexItem(Model model, @PathVariable("oid") Long oid) {
-		Order order = orderRepository.findById(oid).get();
+		Order order = orderService.findById(oid);
 		OrderItem orderItem = new OrderItem();
-		List<Product> products = productRepository.findAll();
+		List<Product> products = productService.findAll();
 		model.addAttribute("order", order);
 		model.addAttribute("orderItem", orderItem);
 		model.addAttribute("products", products);
@@ -107,26 +103,22 @@ public class OrderController {
 		// 驗證資料
 		inventoryValidator.validate(orderItem, result);
 		if(result.hasErrors()) {
-			Order order = orderRepository.findById(oid).get();
-			List<Product> products = productRepository.findAll();
+			Order order = orderService.findById(oid);
+			List<Product> products = productService.findAll();
 			model.addAttribute("order", order);
 			model.addAttribute("orderItem", orderItem);
 			model.addAttribute("products", products);
 			return "order-item";
 		}
-		// 訂單檔(主檔)
-		Order order = orderRepository.findById(oid).get();
-		// 訂單項目與訂單檔(主檔)建立關聯 (ps:由多的一方建立關聯)
-		orderItem.setOrder(order);
-		orderItemRepository.save(orderItem);
+		orderService.saveOrderItem(orderItem,oid);
 		return "redirect:/order/" + oid + "/item";
 	}
 	
 	@GetMapping("/edit/{oid}/item/{iid}") // 項目修改頁面的呈現
 	public String editItem(@PathVariable("oid") Long oid, @PathVariable("iid") Long iid, Model model) {
-		Order order = orderRepository.findById(oid).get();
-		OrderItem orderItem = orderItemRepository.findById(iid).get();
-		List<Product> products = productRepository.findAll();
+		Order order = orderService.findById(oid);
+		OrderItem orderItem = orderService.findOrderItemById(iid);
+		List<Product> products = productService.findAll();
 		model.addAttribute("order", order);
 		model.addAttribute("orderItem", orderItem);
 		model.addAttribute("products", products);
@@ -136,18 +128,14 @@ public class OrderController {
 	@PutMapping("/{oid}/item")
 	// 修改訂單項目
 	public String updateItem(OrderItem orderItem, @PathVariable("oid") Long oid) {
-		// 訂單檔(主檔)
-		Order order = orderRepository.findById(oid).get();
-		// 訂單項目與訂單檔(主檔)建立關聯 (ps:由多的一方建立關聯)
-		orderItem.setOrder(order);
-		orderItemRepository.save(orderItem);
+		orderService.saveOrderItem(orderItem,oid);
 		return "redirect:/order/" + oid + "/item";
 	}
 	
 	@GetMapping("/delete/{oid}/item/{iid}")
 	// 刪除採購明細檔
 	public String deleteItem(@PathVariable("oid") Long oid, @PathVariable("iid") Long iid) {
-		orderItemRepository.deleteById(iid);
+		orderService.deleteOrderItem(iid);
 		return "redirect:/order/" + oid + "/item";
 	} 	
 }
