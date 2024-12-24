@@ -32,4 +32,9 @@ public class CustomerService {
 	public void deleteById(Long id) {
 		customerRepository.deleteById(id);
 	}
+	
+	public Integer getOrderCount(Long id) {
+		Customer customer = customerRepository.findById(id).get();
+		return customer.getOrders().size();
+	}
 }

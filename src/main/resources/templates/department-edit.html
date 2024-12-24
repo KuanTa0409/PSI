@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<meta charset="UTF-8">
-		<title>PSI_Department</title>
+		<title>PSI_Department-edit</title>
 		<link rel="stylesheet"
 			  href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 		<style>
@@ -37,6 +37,9 @@
 						   placeholder="請輸入部門名稱" />
 				</div>
 				<input type="submit" value="更新" class="btn btn-primary" />
+				<a th:href="@{/department/}" 
+				   class="btn btn-secondary">返回
+				</a>
 			</form>
 			
 			<!-- Footer -->

@@ -1,5 +1,9 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +26,15 @@ public class CustomerController {
 	@GetMapping("/")
 	public String index(Model model) {
 		model.addAttribute("customer", new Customer());
-		model.addAttribute("customers", customerService.findAll());
+		List<Customer> customers = customerService.findAll();
+		model.addAttribute("customers", customers);
+		
+		// 客戶的訂單數量
+		Map<Long, Integer> orderCounts = new HashMap<>();
+		customers.forEach(customer -> {
+			orderCounts.put(customer.getId(), customerService.getOrderCount(customer.getId()));
+		});
+		model.addAttribute("orderCounts", orderCounts);
 		return "customer"; 
 	}
 	
