@@ -127,7 +127,19 @@ public class OrderController {
 	
 	@PutMapping("/{oid}/item")
 	// 修改訂單項目
-	public String updateItem(OrderItem orderItem, @PathVariable("oid") Long oid) {
+	public String updateItem(OrderItem orderItem, BindingResult result,@PathVariable("oid") Long oid, Model model) {
+		OrderItem originItem = orderService.findOrderItemById(orderItem.getId());
+	    orderItem.setOriginOrderItem(originItem);
+		
+		inventoryValidator.validate(orderItem, result);
+		if (result.hasErrors()) {
+			Order order = orderService.findById(oid);
+	        List<Product> products = productService.findAll();
+	        model.addAttribute("order", order);
+	        model.addAttribute("orderItem", orderItem);
+	        model.addAttribute("products", products);
+	        return "order-item";
+	    }
 		orderService.saveOrderItem(orderItem,oid);
 		return "redirect:/order/" + oid + "/item";
 	}

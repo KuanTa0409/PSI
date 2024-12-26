@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
-	<title>PSI 訂單資料表</title>
+	<title>PSI_Order-edit</title>
 	<link rel="stylesheet"
 		href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 	<style>
@@ -24,7 +24,7 @@
 		<!-- Header -->
 		<div th:include="header :: header"></div>
 		<!-- Content -->
-		<h1 class="section-title">修改訂單</h1>
+		<h1 class="section-title">訂單編輯</h1>
 		<form action="#" th:action="@{/order/{id}(id=${order.id})}" th:object="${order}" method="post">
 			<input type="hidden" name="_method" value="PUT" />
 			<div class="form-group">
@@ -47,8 +47,19 @@
 					<option th:each="emp:${employees}" th:value="${emp.id}" th:text="${emp.name}"></option>
 				</select>
 			</div>
+			<div class="form-group">
+					<label>備註:</label>
+					<input type="text" 
+						   th:field="*{memo}" 
+						   id="memo" 
+						   class="form-control"
+						   placeholder="請輸入備註" />
+				</div>
 			
-			<input type="submit" value="修改訂單" class="btn btn-primary" />
+			<input type="submit" value="更新" class="btn btn-primary" />
+			<a th:href="@{/order/}" 
+				   class="btn btn-secondary">返回
+				</a>
 		</form>
 		<p />
 		<!-- Footer -->

@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "order_item")
@@ -29,6 +30,9 @@ public class OrderItem { //訂單明細
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
+	@Transient  // 不需要存入資料庫
+    private OrderItem originOrderItem;  
 
 	public Long getId() {
 		return id;
@@ -40,6 +44,14 @@ public class OrderItem { //訂單明細
 
 	public Integer getAmount() {
 		return amount;
+	}
+
+	public OrderItem getOriginOrderItem() {
+		return originOrderItem;
+	}
+
+	public void setOriginOrderItem(OrderItem originOrderItem) {
+		this.originOrderItem = originOrderItem;
 	}
 
 	public void setAmount(Integer amount) {
@@ -61,4 +73,5 @@ public class OrderItem { //訂單明細
 	public void setProduct(Product product) {
 		this.product = product;
 	}
+	
 }
