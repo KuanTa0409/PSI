@@ -31,8 +31,8 @@ public class OrderItem { //訂單明細
 	@JoinColumn(name = "product_id")
 	private Product product;
 	
-	@Transient  // 不需要存入資料庫
-    private OrderItem originOrderItem;  
+	@Transient  // 不需存入資料庫
+    private OrderItem originOrderItem; //修改訂單，回加庫存用
 
 	public Long getId() {
 		return id;

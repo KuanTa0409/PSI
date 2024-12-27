@@ -17,7 +17,11 @@
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
             transition: color 0.3s ease;
         }
-    	</style>
+        .low-inventory {
+		    color: red;
+		    font-weight: bold;
+		}
+    </style>
 </head>
 <body>
 	<div class="container my-2">
@@ -46,7 +50,8 @@
 					<td th:text="${inv.price}"></td>
 					<td th:text="${inv.amount1 ne null} ? ${inv.amount1} : '0'"></td>
 					<td th:text="${inv.amount2 ne null} ? ${inv.amount2} : '0'"></td>
-					<td th:text="${inv.amount1?:0} - ${inv.amount2?:0}"></td>
+					<td th:class="${(inv.amount1?:0) - (inv.amount2?:0) < 20} ? 'low-inventory' : '' "
+					    th:text="${inv.amount1?:0} - ${inv.amount2?:0}"></td>
 				</tr>
 			</tbody>
 		</table>

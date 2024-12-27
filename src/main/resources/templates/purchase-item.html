@@ -92,6 +92,9 @@
 				<input th:field="*{amount}" id="amount" class="form-control" />
 			</div>
 			<input type="submit" th:value="(*{id} == null ? '新增採購明細' : '修改採購明細')"  value="新增採購單項目" class="btn btn-primary" />
+			<a th:href="@{/purchase/}" 
+				   class="btn btn-secondary">返回
+			</a>
 		</form>
 		<p />
 		<!-- Footer -->

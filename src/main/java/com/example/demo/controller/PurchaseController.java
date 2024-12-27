@@ -36,7 +36,7 @@ public class PurchaseController {
 	@Autowired
 	private ProductService productService;
 	
-	// 採購單主檔 CRUD --------------------------------------------------
+	// 採購單 --------------------------------------------------
 	@GetMapping("/")
 	public String index(@ModelAttribute Purchase purchase, Model model) {
 		model.addAttribute("purchases", purchaseService.findAll());
@@ -73,7 +73,7 @@ public class PurchaseController {
 		return "redirect:/purchase/";
 	}
 	
-	// 採購單明細檔 CRUD --------------------------------------------------
+	// 採購單明細 --------------------------------------------------
 	@GetMapping("/{pid}/item")
 	public String indexItem(@PathVariable("pid") Long pid, 
 							@ModelAttribute PurchaseItem purchaseItem, 
