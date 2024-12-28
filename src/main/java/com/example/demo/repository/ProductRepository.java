@@ -19,7 +19,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	@Query(nativeQuery = true, 
 			value = "select p.id, p.name, p.cost, p.price, "
 			+ "(select sum(amount) from purchase_item where product_id = p.id limit 1) as amount1, "
-			+ "(select sum(amount) from order_item where product_id = p.id limit 1) as amount2 " + "from product p")
+			+ "(select sum(amount) from order_item where product_id = p.id limit 1) as amount2 " 
+			+ "from product p")
 	List<Inventory> queryInventory();
 
 	// 查詢某商品(根據商品 id)的採購數量(purchase_item)與銷售數量(order_item)
