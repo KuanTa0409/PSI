@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	// nativeQuery = true，表示它們是原生SQL查詢而不是JPQL。查詢結果會映射到 Inventory 和 ProductSales 這兩個介面上
 	
 	// 查詢所有商品的採購數量(purchase_item)與銷售數量(order_item)
-	// SQL別名 amount1: 採購數量, amount2: 銷售數量
+	// amount1: 採購數量, amount2: 銷售數量
 	@Query(nativeQuery = true, 
 			value = "select p.id, p.name, p.cost, p.price, "
 			+ "(select sum(amount) from purchase_item where product_id = p.id limit 1) as amount1, "
@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 	List<Inventory> queryInventory();
 
 	// 查詢某商品(根據商品 id)的採購數量(purchase_item)與銷售數量(order_item)
-	// SQL 別名 amount1: 採購數量, amount2: 銷售數量
+	// amount1: 採購數量, amount2: 銷售數量
 	@Query(nativeQuery = true, 
 			value = "select p.id, p.name, p.cost, p.price, "
 			+ "(select sum(amount) from purchase_item where product_id = p.id limit 1) as amount1, "

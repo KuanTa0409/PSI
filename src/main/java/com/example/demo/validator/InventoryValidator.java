@@ -35,7 +35,6 @@ public class InventoryValidator implements Validator { // 驗證訂單明細(Ord
 			Long id = orderItem.getProduct().getId();
 			Inventory inventory = productRepository.findInventoryById(id);
 			
-			
 			// remains: 庫存數量 (採購數量 - 銷售數量)
 			int purchaseAmount = inventory.getAmount1() == null ? 0 : inventory.getAmount1();
 			int salesAmount = inventory.getAmount2() == null ? 0 : inventory.getAmount2();
